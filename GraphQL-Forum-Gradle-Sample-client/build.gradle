@@ -1,0 +1,43 @@
+plugins {
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.8.1"
+	id 'java'
+}
+
+repositories {
+	jcenter()
+	mavenCentral()
+}
+
+dependencies {
+	// This plugin is a wrapper of the logic already implemented in our maven plugin
+	compile "com.graphql-java-generator:graphql-maven-plugin-logic:${project.version}"
+}
+
+// The next lines makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
+compileJava.dependsOn graphqlGenerateCode
+
+
+dependencies {
+	// The graphql-java-runtime module agregates all dependencies for the generated code, including the plugin runtime
+	implementation "com.graphql-java-generator:graphql-java-runtime:1.8.1"
+	implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.12.1"
+}
+
+
+// Let's configure the GraphQL Gradle Plugin
+graphql {
+	mode = "client"  //This line is here only for the demo, as client is the default mode
+	packageName = 'org.forum.client'
+	customScalars = [ [
+			graphQLTypeName: "Date",
+			javaType: "java.util.Date",
+			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
+	] ]
+
+	// The parameters below change the 1.x default behavior to respect the future 2.x behavior
+	copyRuntimeSources = false
+	generateDeprecatedRequestResponse = false
+	separateUtilityClasses = true
+}
+
+	

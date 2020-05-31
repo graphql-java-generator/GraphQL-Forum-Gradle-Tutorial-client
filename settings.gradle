@@ -1,0 +1,4 @@
+rootProject.name = 'GraphQL-Forum-Gradle-Sample'
+
+includeBuild 'GraphQL-Forum-Gradle-Sample-client'
+includeBuild 'GraphQL-Forum-Gradle-Sample-server'
