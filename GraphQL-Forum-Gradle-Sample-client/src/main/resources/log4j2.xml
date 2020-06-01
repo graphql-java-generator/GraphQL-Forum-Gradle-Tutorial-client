@@ -6,7 +6,7 @@
 			<PatternLayout
 				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
-		<File name="File" fileName="target/JUnit-tests.log4j.log">
+		<File name="File" fileName="build/Main.log4j.log">
 			<PatternLayout>
 				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
 				</pattern>
