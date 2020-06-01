@@ -1,22 +1,23 @@
 # A tutorial for the GraphQL Gradle plugin (client side)
 
-This Tutorial describes how-to create a GraphQL client application, with the [graphql-maven-plugin](https://github.com/graphql-java-generator/graphql-maven-plugin-project)
+
+This Tutorial describes how-to create a GraphQL client application, with the [graphql-maven-plugin](https://github.com/graphql-java-generator/graphql-maven-plugin-project) and the [graphql Gradle plugin](https://github.com/graphql-java-generator/graphql-gradle-plugin-project).
 
 
-The GraphQL Maven plugin helps both on the server and on the client side. You'll find the tutorial for the server side [on this page](../GraphQL-Forum-Maven-Sample-server)
+The GraphQL plugin helps both on the server and on the client side. You'll find the tutorials for the server side on the [Maven server tutorial](https://github.com/graphql-java-generator/GraphQL-Forum-Maven-Tutorial-server) and on the [Gradle server tutorial](https://github.com/graphql-java-generator/GraphQL-Forum-Gradle-Tutorial-server)
 
 
 ## Schema first
 
 This plugin allows a schema first approach.
 
-This approach is the best approach for APIs: it allows to precisely control the Interface Contract. This contract is the heart of all interface systems.
+This approach is the best approach for APIs: it allows to precisely control the Interface Contract. This contract is the heart of all connected systems.
 
 This tutorial won't describe how to create a GraphQL schema. There are plenty of resources on the net for that, starting with the [official GraphQL site](https://graphql.org/).
 
 ## The Forum GraphQL schema
 
-This sample is based on the Forum schema, [available here](https://github.com/graphql-java-generator/GraphQL-Forum-Maven-Sample/blob/master/GraphQL-Forum-Maven-Sample-client/src/main/resources/forum.graphqls)
+This sample is based on the Forum schema, [available here](https://github.com/graphql-java-generator/GraphQL-Forum-Maven-Tutorial-client/blob/master/src/main/resources/forum.graphqls)
 
 This schema contains:
 
@@ -36,12 +37,16 @@ This schema contains:
 
 This schema is stored in the _/src/main/resources/_ project folder for convenience. 
 
-It could be also be used in another folder, like _/src/main/graphql/_. In this case, the schema is not stored in the packaged jar (which is Ok), and you have to use the plugin _schemaFileFolder_ parameter, to indicate where to find this schema.
+It could be also be used in another folder, like _/src/main/graphql/_ . In this case, the schema is not stored in the packaged jar (which is Ok for the Client mode), and you have to use the plugin _schemaFileFolder_ parameter, to indicate where to find this schema.
 
-## The pom file
+## The pom.xml and build.gradle files
 
-As a maven plugin, you have to add the plugin the build section of your pom (the full pom [is available here](https://github.com/graphql-java-generator/GraphQL-Forum-Maven-Sample/blob/master/GraphQL-Forum-Maven-Sample-client/pom.xml)):
+As a Maven or a Gradle plugin, you have to add the plugin in the build:
+* For Maven, you add it in the build section of your pom (here is the [full pom](https://github.com/graphql-java-generator/GraphQL-Forum-Maven-Sample/blob/master/GraphQL-Forum-Maven-Sample-client/pom.xml)):
+* For Gradle, you declare the plugin, then configure it (here is the full [build.gradle](https://github.com/graphql-java-generator/GraphQL-Forum-Gradle-Tutorial-client/blob/master/build.gradle))
   
+
+Let's first have a look at the Maven **pom.xml** file:
 
 ```XML
 	
@@ -98,10 +103,54 @@ As a maven plugin, you have to add the plugin the build section of your pom (the
 	</dependencies>
 ```
 
+Then the Gradle **build.gradle** file:
+
+```Groovy
+plugins {
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.8.1"
+	id 'java'
+}
+
+repositories {
+	jcenter()
+	mavenCentral()
+}
+
+dependencies {
+	// The graphql-java-runtime module agregates all dependencies for the generated code, including the plugin runtime
+	implementation "com.graphql-java-generator:graphql-java-runtime:1.8.1"
+	implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.12.1"
+}
+
+// The line below makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
+compileJava.dependsOn graphqlGenerateCode
+
+// The line below adds the generated sources as a java source folder
+sourceSets.main.java.srcDirs += '/build/generated/graphqlGenerateCode'
+
+// Let's configure the GraphQL Gradle Plugin:
+// All available parameters are described here: 
+// https://graphql-maven-plugin-project.graphql-java-generator.com/graphql-maven-plugin/graphql-mojo.html
+graphql {
+	mode = "client"  //This line is here only for the demo, as client is the default mode
+	packageName = 'org.forum.client'
+	customScalars = [ [
+			graphQLTypeName: "Date",
+			javaType: "java.util.Date",
+			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
+	] ]
+
+	// The parameters below change the 1.x default behavior to respect the future 2.x behavior
+	copyRuntimeSources = false
+	generateDeprecatedRequestResponse = false
+	separateUtilityClasses = true
+}
+```
+
 The compiler must be set to version 1.8 (or higher).
 
 In this plugin declaration:
-* The plugin execution is mapped to its graphql goal
+* (for Maven only) The plugin execution is mapped to its graphql goal
 * Its mode is set to _client_ (which is actually useless and is set here only for clarity, as _client_ is the mode's default value)
 * The plugin generates the GraphQL code in the _packageName_ package (or in the _com.generated.graphql_ if this parameter is not defined)
 * The _separateUtilityClasses_ set _true_ allows this separation:
@@ -113,16 +162,24 @@ In this plugin declaration:
     * It is mandatory to give the implementation for each custom scalar defined in the GraphQL schema.
     * You'll find the relevant documentation on the [Plugin custom scalar doc page](https://graphql-maven-plugin-project.graphql-java-generator.com/customscalars.html)  
 
-You can add the _build-helper-maven-plugin_, so that the generated source is automatically added to the build path of your IDE.
+The generated source is added to the IDE sources, thanks to:
+* (for Maven) The _build-helper-maven-plugin_, so that the generated source is automatically added to the build path of your IDE.
+* (for Gradle) The _sourceSets.main.java.srcDirs += ..._ line
 
 The _graphql-java-runtime_ dependency add all necessary dependencies, for the generated code. Of course, its version must be the same as the plugin's version.
 
 
 ## A look at the generated code
 
-Executing a _mvn clean compile_ will generate the client code in the _packageName_ package (or in the _com.generated.graphql_ if this parameter is not defined)
+Don't forget to execute (or re-execute) a full build when you change the plugin configuration, to renegerate the proper code:
+* (For Maven) Execute a _mvn clean compile_
+* (for Gradle) Execute a _gradlew clean build_
 
-The code is generated in the _/target/generated-sources/graphql-maven-plugin_ folder. And thanks to the _build-helper-maven-plugin_, it should automatically be added to your favorite IDE.
+This will generate the client code in the _packageName_ package (or in the _com.generated.graphql_ if this parameter is not defined)
+
+The code is generated in the :
+* (for Maven) _/target/generated-sources/graphql-maven-plugin_ folder. And thanks to the _build-helper-maven-plugin_, it should automatically be added as a source folder to your favorite IDE.
+* (for Gradle) _/build/generated-sources/graphql-maven-plugin_ folder. And thanks to the  _sourceSets.main.java.srcDirs += ..._ line in the _build.gradle_ file, it should automatically be added as a source folder to your favorite IDE.
 
 Let's take a look at the generated code:
 * The __org.forum.client__ package contains all classes that maps to the GraphQL schema:
@@ -345,7 +402,7 @@ As there is no provided value for the _memberName_ bind parameter, this paramete
 
 Please note that:
 * If a bind parameter is set for a GraphQL array/list, you'll have to provide a java.util.List<YourObject> instance, where YourObject is the type defined in the GraphQL schema.  
-* The _since_ parameter is a custom scalar of type _Date_ . In the pom (or gradle configuration), the custom scalar is declared as being a _java.util.Date_ so the value in your code is a standard java.util.Date. The custom scalar implementation provided in the pom (or gradle configuration) takes care of properly format the code (when executing the request) and read the value (when reading the server response). More information on that in the [custom scalar plugin's doc page](https://graphql-maven-plugin-project.graphql-java-generator.com/customscalars.html).
+* The _since_ parameter is a custom scalar of type _Date_ . In the pom.xml or the build.gradle file, the custom scalar is declared as being a _java.util.Date_ so the value in your code is a standard java.util.Date. The custom scalar implementation provided in the pom.xml or the build.gradle file takes care of properly format the code (when executing the request) and read the value (when reading the server response). More information on that in the [custom scalar plugin's doc page](https://graphql-maven-plugin-project.graphql-java-generator.com/customscalars.html).
 
 
 ## Full requests
