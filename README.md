@@ -96,7 +96,7 @@ Then the Gradle **build.gradle** file:
 
 ```Groovy
 plugins {
-	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.8.1"
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.11"
 	id 'java'
 }
 
@@ -106,8 +106,8 @@ repositories {
 }
 
 dependencies {
-	// The graphql-java-runtime module agregates all dependencies for the generated code, including the plugin runtime
-	implementation "com.graphql-java-generator:graphql-java-runtime:1.8.1"
+	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
+	implementation "com.graphql-java-generator:graphql-java-runtime:1.11"
 	implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.12.1"
 }
 

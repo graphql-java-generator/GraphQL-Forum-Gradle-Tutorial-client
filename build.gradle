@@ -1,5 +1,5 @@
 plugins {
-	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.11"
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.14.1"
 	id 'java'
 }
 
@@ -9,9 +9,8 @@ repositories {
 }
 
 dependencies {
-	// The graphql-java-runtime module agregates all dependencies for the generated code, including the plugin runtime
-	implementation "com.graphql-java-generator:graphql-java-runtime:1.11"
-	implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.12.1"
+	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
+	implementation "com.graphql-java-generator:graphql-java-runtime:1.14.1"
 }
 
 // The line below makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
@@ -31,7 +30,7 @@ generateClientCodeConf {
 			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
 	] ]
 
-	// The parameters below change the 1.x default behavior. They are set to respect the behavior of the future 2.x versions 
+	// The parameters below change the 1.x default behavior. They are set to respect the default behavior of the future 2.x versions 
 	copyRuntimeSources = false
 	generateDeprecatedRequestResponse = false
 	separateUtilityClasses = true
