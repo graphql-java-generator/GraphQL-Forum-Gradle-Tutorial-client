@@ -1,5 +1,6 @@
+
 plugins {
-	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.14.1"
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLpluginVersion}"
 	id 'java'
 }
 
@@ -10,7 +11,7 @@ repositories {
 
 dependencies {
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
-	implementation "com.graphql-java-generator:graphql-java-runtime:1.14.1"
+	implementation "com.graphql-java-generator:graphql-java-client-dependencies:${graphQLpluginVersion}"
 }
 
 // The line below makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
@@ -31,7 +32,6 @@ generateClientCodeConf {
 	] ]
 
 	// The parameters below change the 1.x default behavior. They are set to respect the default behavior of the future 2.x versions 
-	copyRuntimeSources = false
 	generateDeprecatedRequestResponse = false
 	separateUtilityClasses = true
 }

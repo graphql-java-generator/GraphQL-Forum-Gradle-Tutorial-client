@@ -92,11 +92,18 @@ Let's first have a look at the Maven **pom.xml** file:
 	</dependencies>
 ```
 
-Then the Gradle **build.gradle** file:
+Then the Gradle **build.properties** and **build.gradle** files:
+
+Define once the plugin version in the **build.properties** file:
 
 ```Groovy
+graphQLpluginVersion = 1.14.1
+```
+
+```Groovy
+
 plugins {
-	id "com.graphql_java_generator.graphql-gradle-plugin" version "1.11"
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLpluginVersion}"
 	id 'java'
 }
 
@@ -107,8 +114,7 @@ repositories {
 
 dependencies {
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
-	implementation "com.graphql-java-generator:graphql-java-runtime:1.11"
-	implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.12.1"
+	implementation "com.graphql-java-generator:graphql-java-client-dependencies:${graphQLpluginVersion}"
 }
 
 // The line below makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
@@ -128,8 +134,7 @@ generateClientCodeConf {
 			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
 	] ]
 
-	// The parameters below change the 1.x default behavior to respect the future 2.x behavior
-	copyRuntimeSources = false
+	// The parameters below change the 1.x default behavior. They are set to respect the default behavior of the future 2.x versions 
 	generateDeprecatedRequestResponse = false
 	separateUtilityClasses = true
 }
