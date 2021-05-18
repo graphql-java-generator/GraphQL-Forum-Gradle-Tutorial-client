@@ -28,6 +28,7 @@ hs_err_pid*
 .project
 **/.settings
 **/bin
+target/
 
 # Gradle files
 **/.gradle
