@@ -1,7 +1,8 @@
 
 plugins {
-	id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLpluginVersion}"
+	id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLPluginVersion}"
 	id 'java'
+	id "org.springframework.boot" version "2.4.4"
 }
 
 repositories {
@@ -11,14 +12,14 @@ repositories {
 
 dependencies {
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
-	implementation "com.graphql-java-generator:graphql-java-client-dependencies:${graphQLpluginVersion}"
+	implementation "com.graphql-java-generator:graphql-java-client-dependencies:${graphQLRuntimeVersion}"
 }
 
 // The line below makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
 compileJava.dependsOn generateClientCode
+processResources.dependsOn generateClientCode
 
 // The line below adds the generated sources as a java source folder in the IDE
-sourceSets.main.java.srcDirs += '/build/generated/resources/graphqlGradlePlugin'
 sourceSets.main.java.srcDirs += '/build/generated/sources/graphqlGradlePlugin'
 
 
@@ -33,7 +34,7 @@ generateClientCodeConf {
 			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
 	] ]
 
-	// The parameters below change the 1.x default behavior. They are set to respect the default behavior of the future 2.x versions 
+	// The parameters below change the 1.x default behavior. They are set to respect the default behavior of the future 2.x versions
 	generateDeprecatedRequestResponse = false
 	separateUtilityClasses = true
 }
