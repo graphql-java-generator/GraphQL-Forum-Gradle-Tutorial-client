@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
-	implementation "com.graphql-java-generator:graphql-java-client-dependencies:${graphQLRuntimeVersion}"
+	implementation "com.graphql-java-generator:graphql-java-client-dependencies:${graphQLPluginVersion}"
 }
 
 // The line below makes the GraphQL plugin be executed before Java compiles, so that all sources are generated on time
@@ -21,6 +21,7 @@ processResources.dependsOn generateClientCode
 
 // The line below adds the generated sources as a java source folder in the IDE
 sourceSets.main.java.srcDirs += '/build/generated/sources/graphqlGradlePlugin'
+sourceSets.main.java.srcDirs += '/build/generated/resources/graphqlGradlePlugin'
 
 
 // Let's configure the GraphQL Gradle Plugin:
