@@ -2,7 +2,7 @@
 plugins {
 	id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLPluginVersion}"
 	id 'java'
-	id "org.springframework.boot" version "2.4.4"
+	id "org.springframework.boot" version "2.7.6"
 }
 
 repositories {
@@ -11,6 +11,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot:2.7.6'
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
 	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginVersion}"
 }
