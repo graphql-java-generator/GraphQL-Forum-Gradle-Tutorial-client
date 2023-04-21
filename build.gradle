@@ -1,9 +1,12 @@
 
 plugins {
-	id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLPluginVersion}"
+	// CAUTION !    The id of the plugin has changed since 2.0RC1.
+	// It was 'com.graphql_java_generator.graphql-gradle-plugin'. It is now 'com.graphql-java-generator.graphql-gradle-plugin'
+	id "com.graphql-java-generator.graphql-gradle-plugin" version "${graphQLPluginVersion}"
 	id 'java'
-	id "org.springframework.boot" version "2.7.6"
+	id "org.springframework.boot" version "${springBootVersion}"
 }
+sourceCompatibility = '17'
 
 repositories {
 	mavenLocal()
@@ -11,7 +14,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot:2.7.6'
+	implementation 'org.springframework.boot:spring-boot:${springBootVersion}'
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
 	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginVersion}"
 }
@@ -32,7 +35,7 @@ generateClientCodeConf {
 			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
 	] ]
 
-	// The parameters below change the 1.x default behavior. They are set to respect the default behavior of the future 2.x versions
+	// The parameters below are mandatory for 2.0RC1. These parameters will disappear in 2.0, and these values will be forced
 	copyRuntimeSources = false
 	generateDeprecatedRequestResponse = false
 	separateUtilityClasses = true
