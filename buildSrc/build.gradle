@@ -1,0 +1,15 @@
+
+plugins {
+	id 'java-library'
+}
+sourceCompatibility = '17'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+dependencies {
+	// The graphql-java-client-dependencies module agregates all dependencies for the generated code
+    implementation "org.springframework:spring-core:5.3.26"
+}
