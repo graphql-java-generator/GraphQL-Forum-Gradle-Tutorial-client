@@ -1,1 +1,19 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Start of the local configuration
+//
+// This configuration is useful only to test the produced plugin, when it is published locally, before it is published to the Gradle Plugin Portal
+// This is used for internal test only.
+/*
+pluginManagement {
+    repositories {
+        maven {
+            url = '../graphql-gradle-plugin-project/graphql-gradle-plugin/build/local-plugin-repository'
+        }
+        gradlePluginPortal()
+    }
+}
+*/
+// End of the local configuration
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 rootProject.name = 'GraphQL-Forum-Gradle-Tutorial-client'

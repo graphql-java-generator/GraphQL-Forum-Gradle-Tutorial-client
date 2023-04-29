@@ -1,3 +1,15 @@
+// The GraphQL plugin is compiled with Spring Boot 2.7.
+// If you want to use it with Spring Boot 3.x, you have to update these dependencies, like this buildscript block: 
+buildscript {
+    repositories {
+    	// The GraphQL plugin depends on libraries that are available with maven
+        mavenLocal()
+        mavenCentral()
+    }
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-starter-graphql:${springBootVersion}"
+    }
+}
 
 plugins {
 	// CAUTION !    The id of the plugin has changed since 2.0RC1.
