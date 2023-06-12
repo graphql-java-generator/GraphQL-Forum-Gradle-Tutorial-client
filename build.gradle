@@ -16,7 +16,7 @@ plugins {
 	// It was 'com.graphql_java_generator.graphql-gradle-plugin'. It is now 'com.graphql-java-generator.graphql-gradle-plugin'
 	id "com.graphql-java-generator.graphql-gradle-plugin" version "${graphQLPluginVersion}"
 	id 'java'
-	id "org.springframework.boot" version "${springBootVersion}"
+	id 'org.springframework.boot' version "${springBootVersion}"
 	id 'io.spring.dependency-management' version "${dependencyManagementPluginVersion}"
 }
 sourceCompatibility = '17'
