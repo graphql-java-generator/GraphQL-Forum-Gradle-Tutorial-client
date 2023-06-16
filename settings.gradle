@@ -6,7 +6,7 @@
 pluginManagement {
     repositories {
         maven {
-            url = '../graphql-gradle-plugin-project/graphql-gradle-plugin/build/local-plugin-repository'
+            url = '../graphql-gradle-plugin-project/graphql-gradle-plugin3/build/local-plugin-repository'
         }
         gradlePluginPortal()
     }

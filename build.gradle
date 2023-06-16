@@ -14,7 +14,7 @@ buildscript {
 plugins {
 	// CAUTION !    The id of the plugin has changed since 2.0RC1.
 	// It was 'com.graphql_java_generator.graphql-gradle-plugin'. It is now 'com.graphql-java-generator.graphql-gradle-plugin'
-	id "com.graphql-java-generator.graphql-gradle-plugin" version "${graphQLPluginVersion}"
+	id "com.graphql-java-generator.graphql-gradle-plugin3" version "${graphQLPluginVersion}"
 	id 'java'
 	id 'org.springframework.boot' version "${springBootVersion}"
 	id 'io.spring.dependency-management' version "${dependencyManagementPluginVersion}"
@@ -29,7 +29,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot'
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
-	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginVersion}"
+	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginDependencies}"
 }
 
 // The line below adds the generated sources as a java source folder in the IDE
