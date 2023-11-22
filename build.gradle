@@ -29,7 +29,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot'
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
-	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginDependencies}"
+	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginVersion}"
 }
 
 // The line below adds the generated sources as a java source folder in the IDE
