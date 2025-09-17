@@ -13,13 +13,13 @@ buildscript {
 
 plugins {
 	// CAUTION !    The id of the plugin has changed since 2.0RC1.
-	// It was 'com.graphql_java_generator.graphql-gradle-plugin'. It is now 'com.graphql-java-generator.graphql-gradle-plugin'
+	// It was 'com.graphql_java_generator.graphql-gradle-plugin'. It is now 'com.graphql-java-generator.graphql-gradle-plugin3'
 	id "com.graphql-java-generator.graphql-gradle-plugin3" version "${graphQLPluginVersion}"
 	id 'java'
 	id 'org.springframework.boot' version "${springBootVersion}"
-	id 'io.spring.dependency-management' version "${dependencyManagementPluginVersion}"
+	id 'io.spring.dependency-management' version "${springDependencyManagementPluginVersion}"
 }
-sourceCompatibility = '17'
+
 
 repositories {
 	mavenLocal()
@@ -30,6 +30,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot'
 	// THE VERSION MUST BE THE SAME AS THE PLUGIN's ONE
 	implementation "com.graphql-java-generator:graphql-java-client-runtime:${graphQLPluginVersion}"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of("${javaVersion}")
+    }
 }
 
 // The line below adds the generated sources as a java source folder in the IDE
@@ -47,11 +53,6 @@ generateClientCodeConf {
 			javaType: "java.util.Date",
 			graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
 	] ]
-
-	// The parameters below are mandatory for 2.0RC1. These parameters will disappear in 2.0, and these values will be forced
-	copyRuntimeSources = false
-	generateDeprecatedRequestResponse = false
-	separateUtilityClasses = true
 }
 
 	
