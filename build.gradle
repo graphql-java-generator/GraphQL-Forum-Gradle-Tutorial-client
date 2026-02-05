@@ -37,6 +37,10 @@ java {
         languageVersion = JavaLanguageVersion.of("${javaVersion}")
     }
 }
+compileJava {
+    options.encoding = "UTF-8"
+	options.compilerArgs << "-Werror"
+}
 
 // The line below adds the generated sources as a java source folder in the IDE
 sourceSets.main.java.srcDirs += '/build/generated/sources/graphqlGradlePlugin'
